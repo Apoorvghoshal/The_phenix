@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head><title>Admin Panel</title></head>
+<body>
+<h2>Admin Approval Panel</h2>
+
+<table border="1" cellpadding="6">
+<tr>
+  <th>Username</th>
+  <th>Status</th>
+  <th>Action</th>
+</tr>
+
+{% for u in users %}
+<tr>
+  <td>{{ u.username }}</td>
+  <td>{{ u.active }}</td>
+  <td>
+    {% if u.active != "yes" %}
+    <form method="POST">
+      <input type="hidden" name="username" value="{{ u.username }}">
+      <button type="submit">Approve</button>
+    </form>
+    {% endif %}
+  </td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/dashboard">Back</a>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verify OTP | Khandelwal Samaj</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background:#f4f4f4;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:100vh;
+    }
+    .card{
+      background:#fff;
+      width:360px;
+      padding:30px;
+      border-radius:6px;
+      box-shadow:0 0 10px rgba(0,0,0,0.1);
+      text-align:center;
+    }
+    h2{
+      margin-bottom:10px;
+      color:#6b1f1f;
+    }
+    input{
+      width:100%;
+      padding:12px;
+      margin:20px 0;
+      border:1px solid #ccc;
+      border-radius:4px;
+      font-size:18px;
+      text-align:center;
+      letter-spacing:4px;
+    }
+    button{
+      width:100%;
+      padding:12px;
+      background:#6b1f1f;
+      color:#fff;
+      border:none;
+      border-radius:4px;
+      font-size:15px;
+      cursor:pointer;
+    }
+    .flash{
+      margin-bottom:15px;
+      font-size:14px;
+      color:#b00020;
+    }
+    .note{
+      margin-top:15px;
+      font-size:13px;
+      color:#666;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>OTP Verification</h2>
+  <p>Please enter the OTP sent to your email</p>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, msg in messages %}
+        <div class="flash">{{ msg }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <form action="/verify" method="POST">
+    <input type="text" name="otp" placeholder="••••" maxlength="4" required>
+    <button type="submit">Verify & Login</button>
+  </form>
+
+  <div class="note">
+    OTP is valid for a short time only.
+  </div>
+</div>
+
+</body>
+</html>
