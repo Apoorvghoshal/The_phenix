@@ -233,48 +233,85 @@ image{
   border-radius: 50%;
 }
 
-/* ================= FOOTER ================= */
+//* ================= FOOTER ================= */
 footer {
-  background: var(--dark);
+  background-color: #222;
   color: #fff;
   padding: 40px 10%;
+  min-height: 200px;
+  display: block;
 }
 
+
+/* Footer layout */
 .footer-content {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;   /* 🔥 important */
-  gap: 40px;
-  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 60px;
+  max-width: 1200px;     /* 🔥 prevents parent stretching issues */
+  margin: 0 auto;
+  text-align: left;
 }
 
-.footer-col {
-  min-width: 220px;          /* 🔥 keeps alignment clean */
+/* Each column */
+.footer-content > div {
+  flex: 1;               /* 🔥 equal width, independent of parent */
+  min-width: 260px;
 }
 
-.footer-col h4 {
-  margin-bottom: 12px;
+/* Headings */
+.footer-content h4 {
+  margin-bottom: 14px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
-.footer-col p {
+/* Paragraphs */
+.footer-content p {
   margin: 6px 0;
-  text-align: left;          /* force left alignment */
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* Social links */
+.socials {
+  display: flex;
+  flex-direction: column;   /* links stacked vertically */
+  gap: 6px;                 /* 🔥 reduced spacing */
 }
 
 .socials a {
-  display: block;
-  color: #fff;
+  display: flex;            /* 🔥 SVG + text side-by-side */
+  align-items: center;
+  gap: 6px;                 /* 🔥 small icon-text gap */
   text-decoration: none;
-  margin-bottom: 8px;
-  text-align: left;          /* 🔥 fix */
+  color: #fff;
+  font-size: 15px;
+}
+.socials svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;   /* 🔥 prevents shrinking in flex */
 }
 
+
+/* Copyright */
+footer .copyright {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* ================= MOBILE ================= */
 @media (max-width: 768px) {
   .footer-content {
     flex-direction: column;
+    gap: 30px;
   }
 
-  .footer-col {
+  .footer-content > div {
     width: 100%;
   }
 }
@@ -365,4 +402,110 @@ footer {
 
 .lang-btn:hover {
     background: #f0f0f0;
+}
+
+#inauguration-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #800000, #400000); /* Maroon/Gold theme */
+    z-index: 9999; /* Higher than everything else */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1.5s ease-out, visibility 1.5s;
+}
+
+.ribbon-container {
+    text-align: center;
+    animation: zoomIn 2s ease-out;
+}
+
+.gold-text {
+    color: #FFD700;
+    font-size: 3rem;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    margin-bottom: 10px;
+}
+
+.sub-text {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
+
+#welcome-btn {
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    background: #FFD700;
+    color: #400000;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    transition: transform 0.3s;
+}
+
+#welcome-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Hide the overlay when active */
+.hidden-overlay {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
+
+#video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000; /* Black background while loading */
+    z-index: 10001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#welcome-screen {
+    text-align: center;
+    z-index: 10002;
+    transition: opacity 0.5s ease;
+}
+
+#inauguration-video {
+    display: none; /* Hidden until clicked */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures video fills screen like a background */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Class to fade out the whole overlay */
+.fade-out {
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    pointer-events: none;
+}
+
+/* Gold Text Styling */
+.gold-text {
+    color: #FFD700;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-family: serif;
 }
