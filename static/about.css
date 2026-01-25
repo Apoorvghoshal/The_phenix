@@ -1,18 +1,21 @@
+:root {
+  --primary: #eb9203;
+  --accent: #6b1f1f;
+  --dark: #222;
+  --light-gray: #f7f7f7;
+}
+
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   color: #333;
-  line-height: 1.6;
 }
-
-h1, h2 {
-  text-align: center;
-  margin-bottom: 30px;
-}
+/* Navbar */
 .navbar {
   position: sticky;
   top: 0;
-  background: #eb9203;
+  background: var(--primary);
   border-bottom: 1px solid #ddd;
   z-index: 1000;
 }
@@ -52,173 +55,97 @@ nav a {
 }
 
 nav a:hover {
-  color: #6b1f1f; /* maroon accent */
+  color: var(--accent);
 }
 
-/* Mobile */
 .menu-toggle {
   display: none;
   font-size: 24px;
   cursor: pointer;
 }
-/* SECTION 1 */
-.about-samaj {
-  padding: 60px 10%;
-}
 
-.samaj-wrapper {
-  display: flex;
-  gap: 40px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.samaj-text {
-  flex: 1;
-}
-
-.samaj-carousel {
-  flex: 1;
-}
-
-.samaj-carousel img {
-  width: 100%;
-  border-radius: 6px;
-  display: none;
-}
-
-.samaj-slide.active {
-  display: block;
-}
-
-//* GALLERY */
-.gallery {
+/* HEADER */
+.page-header {
+  text-align: center;
+  padding: 50px 20px;
   background: #f5f5f5;
-  padding: 60px 10%;
 }
 
-.gallery-grid {
+/* PHOTOS */
+.photos {
+  padding: 50px 10%;
+  text-align: center;
+}
+
+.photo-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
+  margin-top: 30px;
 }
 
 /* 🔥 Key fix */
-.gallery-grid img {
+.photo-grid img {
   width: 100%;
-  height: 220px;           /* fixed height for uniform size */
-  object-fit: cover;      /* 🔥 crops instead of stretching */
+  aspect-ratio: 4 / 3;   /* change to 1 / 1 if you want square */
+  object-fit: cover;     /* crops, does NOT stretch */
   border-radius: 6px;
   display: block;
 }
 
 
-/* YUVA */
-.yuva {
-  padding: 60px 10%;
-  text-align: center;
-}
-
-/* CUSTOM SECTION */
-.custom-section {
-  background: #f9f9f9;
-  padding: 60px 10%;
-  text-align: center;
-}
-
-/* QUOTES */
-.quotes {
+/* CONTACT */
+.contact-section {
   padding: 60px 10%;
 }
-
-.quote-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-  gap: 20px;
+.contact-wrapper {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.contact-info,
+.contact-form {
+  flex: 1;
+  min-width: 280px;
 }
 
-.quote {
-  background: #fff;
-  padding: 20px;
-  border-left: 4px solid #6b1f1f;
-  box-shadow: 0 0 5px rgba(0,0,0,0.05);
+.contact-info p {
+  margin-bottom: 15px;
+}
+
+.whatsapp-btn {
+  display: inline-block;
+  margin-top: 15px;
+  background: #25D366;
+  color: #fff;
+  padding: 12px 20px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.contact-form button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
 /* FOOTER */
-.footer {
+.contact-footer {
   background: #222;
   color: #fff;
-  text-align: center;
-  padding: 25px;
-}
-
-/* Mobile View Adjustment */
-@media (max-width: 768px) {
-  .samaj-wrapper {
-    /* Changes stack from horizontal to vertical */
-    flex-direction: column;
-  }
-
-  .samaj-carousel {
-    /* Forces the carousel to the top (lower number comes first) */
-    order: 1;
-    width: 100%;
-  }
-
-  .samaj-text {
-    /* Forces text to the bottom */
-    order: 2;
-    width: 100%;
-  }
-
-  .about-samaj {
-    padding: 30px 5%; /* Reducing padding for better mobile fit */
-  }
-}
-@media (max-width: 768px) {
-  .samaj-text {
-    margin-top: 20px;
-    text-align: justify; /* Optional: makes text look cleaner on small screens */
-  }
-}
-@media (max-width: 768px) {
-  /* 1. Show the hamburger icon */
-  .menu-toggle {
-    display: block;
-    order: 3; /* Keeps it on the right */
-  }
-
-  /* 2. Hide links by default and stack them vertically */
-  nav {
-    display: none; /* Hidden until toggled */
-    flex-direction: column;
-    position: absolute;
-    top: 65px; /* Adjust based on navbar height */
-    left: 0;
-    width: 100%;
-    background: #eb9203;
-    padding: 20px 0;
-    gap: 0; /* Remove horizontal gaps */
-    border-bottom: 2px solid #6b1f1f;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  }
-
-  /* 3. Style individual mobile links */
-  nav a {
-    width: 100%;
-    padding: 15px 25px;
-    box-sizing: border-box;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-  }
-
-  /* 4. The class that JavaScript will trigger */
-  nav.show {
-    display: flex;
-  }
-
-  /* 5. Handle the logo for small screens */
-  .logo span {
-    font-size: 14px; /* Shrink text slightly so it doesn't wrap */
-    max-width: 180px;
-  }
+  text-align: left;
+  padding: 20px;
 }
