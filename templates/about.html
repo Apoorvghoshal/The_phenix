@@ -13,14 +13,14 @@
   <div class="nav-container">
     <div class="logo">
       <img src="{{ url_for('static', filename='assests/logo.png') }}" alt="Logo">
-      <span>Khandelwal Samaj Raipur</span>
+      <span data-key="hero-title">Khandelwal Samaj Raipur</span>
     </div>
 
    <nav id="nav-menu">
-      <a href="{{ url_for('home') }}">Home</a>
-      <a href="{{ url_for('about') }}">About</a>
-      <a href="{{ url_for('directory') }}">Community Directory</a>
-      <a href="{{ url_for('contact') }}">Contact</a>
+      <a href="{{ url_for('home') }}" data-key="home-link">Home</a>
+      <a href="{{ url_for('about') }}" data-key="about-link">About</a>
+      <a href="{{ url_for('directory') }}" data-key="directory-link">Community Directory</a>
+      <a href="{{ url_for('contact') }}" data-key="contact-link">Contact</a>
     </nav>
 
     <div class="menu-toggle" onclick="toggleMenu()">☰</div>
@@ -28,27 +28,28 @@
 </header>
 
 <section class="about-samaj">
-  <h1>About Khandelwal Samaj</h1>
+  <h1 data-key="about-heading">About Khandelwal Samaj</h1>
 
   <div class="samaj-wrapper">
     <div class="samaj-text">
       <p>
-        The Khandelwal Yuva Samaj is the dynamic youth wing of our organization,
-        focused on mobilizing the energy and talent of our younger generation.
-        Our role is to bridge the gap between tradition and innovation by organizing professional workshops,
-        sports tournaments, and networking events.
+        The Khandelwal Samaj, Raipur, not only safeguards traditions but also embraces progress by
+          encouraging education, entrepreneurship, and social responsibility among its members.
+          Through mentorship programs, and career guidance initiatives, the Samaj empowers the younger generation to excel in academics and professional life while staying rooted in cultural values.
+          <p>
+          Beyond cultural preservation, the Samaj fosters unity by hosting community gatherings,
+        health camps, and awareness drives that strengthen social bonds and promote collective well-being.
+        Its commitment to philanthropy extends to supporting charitable causes, aiding the underprivileged, and
+        contributing to disaster relief efforts, thereby reinforcing the spirit of compassion and service.
+        In today’s rapidly evolving society, the Samaj acts as a bridge between tradition and modernity—celebrating age-old customs while adapting to contemporary needs. By nurturing inclusivity, encouraging dialogue, and promoting ethical living, the Khandelwal Samaj continues to be a guiding force, ensuring that the legacy of the community remains vibrant and relevant for generations to come.
       </p>
-      <p>
-        We are committed to social responsibility, frequently leading initiatives like blood donation
-        drives and environmental awareness campaigns. By empowering the youth to take leadership roles,
-        the Yuva Samaj ensures the long-term vitality and progress of our community in Raipur.
-      </p>
+
     </div>
 
     <div class="samaj-carousel">
-      <img class="samaj-slide active" src="https://picsum.photos/500/350?31">
-      <img class="samaj-slide" src="https://picsum.photos/500/350?32">
-      <img class="samaj-slide" src="https://picsum.photos/500/350?33">
+      <img class="samaj-slide active" src="{{ url_for('static', filename='assests/event6.jpeg') }}">
+<!--      <img class="samaj-slide" src="{{ url_for('static', filename='assests/event2.jpeg') }}">-->
+<!--      <img class="samaj-slide" src="{{ url_for('static', filename='assests/event3.jpeg') }}">-->
     </div>
   </div>
 </section>
@@ -56,41 +57,34 @@
 <section class="gallery">
   <h2>Gallery</h2>
   <div class="gallery-grid">
-    <img src="https://picsum.photos/300/220?41">
-    <img src="https://picsum.photos/300/220?42">
-    <img src="https://picsum.photos/300/220?43">
-    <img src="https://picsum.photos/300/220?44">
-    <img src="https://picsum.photos/300/220?45">
-    <img src="https://picsum.photos/300/220?46">
+    <img src="{{ url_for('static', filename='assests/program.jpeg') }}">
+    <img src="{{ url_for('static', filename='assests/program1.jpeg') }}">
+    <img src="{{ url_for('static', filename='assests/program2.jpeg') }}">
+    <img src="{{ url_for('static', filename='assests/program3.jpeg') }}">
+    <img src="{{ url_for('static', filename='assests/program4.jpeg') }}">
+    <img src="{{ url_for('static', filename='assests/program5.jpeg') }}">
   </div>
 </section>
 
 <section class="yuva">
   <h2>Khandelwal Yuva Mandal</h2>
   <p>
-    The Khandelwal Yuva Samaj is the dynamic youth wing of our organization,
-      focused on mobilizing the energy and talent of our younger generation.
-      Our role is to bridge the gap between tradition and innovation by organizing
-      professional workshops, sports tournaments, and networking events.
-      We are committed to social responsibility, frequently leading initiatives like
-      blood donation drives and environmental awareness campaigns.
-      By empowering the youth to take leadership roles, the Yuva Samaj ensures
-      the long-term vitality and progress of our community in Raipur.
+    The Khandelwal Yuva Samaj stands as a beacon of youthful enthusiasm, channeling creativity and ambition into meaningful action. By cultivating platforms for skill development, entrepreneurship, and cultural expression, we encourage young members to explore their potential while remaining deeply connected to their heritage.
+Our initiatives go beyond events—they are movements that instill confidence, teamwork, and leadership. From organizing debates and cultural competitions to launching digital literacy programs, the Yuva Samaj equips the youth with tools to thrive in a competitive world. At the same time, we emphasize values of service and solidarity, ensuring that every activity contributes to the betterment of society at large.
+Through collaborations with educational institutions, NGOs, and local businesses, we create opportunities for mentorship and career growth, helping young professionals build networks that extend beyond the community. By celebrating festivals with innovation and inclusivity, we also ensure that traditions are not just preserved but reimagined for future generations.
 
   </p>
   <p>
-    The Yuva Mandal focuses on leadership development, community service,
-    and encouraging youth participation to ensure a progressive future
-    for the samaj.
+    In essence, the Khandelwal Yuva Samaj is more than a youth wing—it is a driving force of transformation. With every initiative, we reaffirm our commitment to nurturing responsible citizens, visionary leaders, and compassionate individuals who will carry forward the legacy of the Khandelwal community with pride and purpose.
   </p>
 </section>
 
-<section class="custom-section">
-  <h2>Special Section</h2>
-  <p>
-    Component placeholder – this section is reserved for custom content.
-  </p>
-</section>
+<!--<section class="custom-section">-->
+<!--  <h2>Special Section</h2>-->
+<!--  <p>-->
+<!--    Component placeholder – this section is reserved for custom content.-->
+<!--  </p>-->
+<!--</section>-->
 
 <section class="quotes">
   <h2>Thoughts & Quotes</h2>
