@@ -49,6 +49,180 @@
       text-decoration:none;
       font-weight:bold;
     }
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #eb9203 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #eb9203;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1em;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .stats {
+            background: #f0f0f0;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: #333;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        thead {
+            background: #eb9203;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #555;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+
+        tbody tr {
+            transition: background-color 0.3s;
+        }
+
+        tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        .phone-link {
+            color: #eb9203;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .phone-link:hover {
+            text-decoration: underline;
+        }
+
+        .empty-cell {
+            color: #999;
+            font-style: italic;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            th, td {
+                padding: 8px 10px;
+                font-size: 0.85em;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .stats {
+                width: 100%;
+                text-align: center;
+            }
+        }
   </style>
 </head>
 <body>
@@ -65,8 +239,7 @@
   <div class="card">
     <h2>Welcome</h2>
     <p>
-      This is the official community dashboard for registered members.
-      All information displayed here is common and read-only.
+      This is the official community dashboard for registered members only.
     </p>
   </div>
 
@@ -74,12 +247,1406 @@
     <h3>Community Directory</h3>
     <p>Access family and member details of the samaj.</p>
   </div>
+    <div class="container">
+        <div class="header">
+            <h1>Khandelwal Samaj</h1>
+            <p>Community Contact Directory - 2026</p>
+        </div>
+    </div>
 
-  <div class="card">
-    <h3>Business Directory</h3>
-    <p>Search and connect with businesses owned by community members.</p>
-  </div>
+        <div class="controls">
+            <div class="search-box">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search by name, phone, or address..."
+                    onkeyup="filterTable()"
+                >
+            </div>
+            <div class="stats">
+                Total: <span id="totalRecords">0</span> | Showing: <span id="visibleRecords">0</span>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+
+
 </div>
 
 </body>
+<script>
+        // COMPLETE JSON DATA - ALL 262 RECORDS
+        const jsonData = [
+  {
+    "name": "AYUSH RAJESH BHANGLA",
+    "phone": "7415421000",
+    "address": "HANUMAN MANDIR,,RAMSAPTA MARG, RAMSAGAR,PARA."
+  },
+  {
+    "name": "NISHA R. BHANGLA",
+    "phone": "9424214331",
+    "address": "HANUMAN MANDIR,,RAMSAPTA MARG, RAMSAGAR,PARA."
+  },
+  {
+    "name": "LOCHAN BHANGLA",
+    "phone": "9174911000",
+    "address": "HANUMAN MANDIR,,RAMSAPTA MARG, RAMSAGAR,PARA."
+  },
+  {
+    "name": "ASHOK KUMAR M. BADAYA",
+    "phone": "9827110040",
+    "address": "NEAR, INDIAN BANK, JAWAHAR NAGAR"
+  },
+  {
+    "name": "MAMTA ASHOK. BADAYA",
+    "phone": "9111313222",
+    "address": "NEAR, INDIAN BANK, JAWAHAR NAGAR"
+  },
+  {
+    "name": "TANUJ",
+    "phone": "7441144111",
+    "address": "NEAR, INDIAN BANK, JAWAHAR NAGAR"
+  },
+  {
+    "name": "AJAY BADAYA",
+    "phone": "7489013302",
+    "address": "HOUSE NO- 102 BLOCK C, KRISHNA APERTMENT, MOWA"
+  },
+  {
+    "name": "VAIBHAV",
+    "phone": "8827717531",
+    "address": "HOUSE NO- 102 BLOCK C, KRISHNA APERTMENT, MOWA"
+  },
+  {
+    "name": "SUNITA",
+    "phone": "8962844495",
+    "address": "HOUSE NO- 102 BLOCK C, KRISHNA APERTMENT, MOWA"
+  },
+  {
+    "name": "MAYANK",
+    "phone": "8517071117",
+    "address": "HOUSE NO- 102 BLOCK C, KRISHNA APERTMENT, MOWA"
+  },
+  {
+    "name": "ASHOK JI KHARWAL",
+    "phone": "9831080072",
+    "address": ""
+  },
+  {
+    "name": "",
+    "phone": "7987258194",
+    "address": ""
+  },
+  {
+    "name": "BADRINARAYAN RAMSWAROOP JI PATODIYA",
+    "phone": "",
+    "address": "MAIN ROAD, RAMSAGAR PARA"
+  },
+  {
+    "name": "SRI GOPAL",
+    "phone": "9770105794",
+    "address": "MAIN ROAD, RAMSAGAR PARA"
+  },
+  {
+    "name": "NAVEEN PATODIYA",
+    "phone": "9827166196",
+    "address": "MAIN ROAD, RAMSAGAR PARA"
+  },
+  {
+    "name": "ABHISHEK",
+    "phone": "9827489996",
+    "address": "MAIN ROAD, RAMSAGAR PARA"
+  },
+  {
+    "name": "AMIT PATODIYA",
+    "phone": "9302508651",
+    "address": "MAIN ROAD, RAMSAGAR PARA"
+  },
+  {
+    "name": "DINESH",
+    "phone": "9827164448",
+    "address": "MAIN ROAD, RAMSAGAR PARA"
+  },
+  {
+    "name": "VARSHA",
+    "phone": "9406145059",
+    "address": "MAIN ROAD, RAMSAGAR PARA"
+  },
+  {
+    "name": "",
+    "phone": "9340119868",
+    "address": "MAIN ROAD, RAMSAGAR PARA"
+  },
+  {
+    "name": "DHARMENDRA JI BADAYA",
+    "phone": "7987808687",
+    "address": "BESIDE, DR. SAHU X-RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "PREETI",
+    "phone": "9039220760",
+    "address": "BESIDE, DR. SAHU X-RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "DIPTI GHIYA",
+    "phone": "7000374412",
+    "address": "RAMSAPTA GALI , NEAR HANUMAN MANDIR,RAMSAGAR PARA"
+  },
+  {
+    "name": "AKSHAT GHIYA",
+    "phone": "7611118003",
+    "address": "RAMSAPTA GALI , NEAR HANUMAN MANDIR,RAMSAGAR PARA"
+  },
+  {
+    "name": "SHIMRIDHI",
+    "phone": "9329018003",
+    "address": "RAMSAPTA GALI , NEAR HANUMAN MANDIR,RAMSAGAR PARA"
+  },
+  {
+    "name": "DEEPAK JI PATODIA",
+    "phone": "8770365125",
+    "address": "INFRONT OF RAM JI HALWAI, MAIN ROAD,RAMSAGARPARA"
+  },
+  {
+    "name": "NEETU",
+    "phone": "9770105794",
+    "address": "INFRONT OF RAM JI HALWAI, MAIN ROAD,RAMSAGARPARA"
+  },
+  {
+    "name": "DR. RAMKRISHNA JI KHUTETA",
+    "phone": "7587145665",
+    "address": "FRONT OF KIRODIMAL DHRAMSALA,,JHAWAHAR NAGAR"
+  },
+  {
+    "name": "SHAILESH KHUTETA",
+    "phone": "9522900033",
+    "address": "FRONT OF KIRODIMAL DHRAMSALA,,JHAWAHAR NAGAR"
+  },
+  {
+    "name": "",
+    "phone": "9329530033",
+    "address": "FRONT OF KIRODIMAL DHRAMSALA,,JHAWAHAR NAGAR"
+  },
+  {
+    "name": "GAURI SHANKAR JI SIROYA",
+    "phone": "9685485376",
+    "address": "KHANDELWAL FURNITURE, GURUNANAK CHOWK,,RAIPUR"
+  },
+  {
+    "name": "MANJU",
+    "phone": "8109105110",
+    "address": "KHANDELWAL FURNITURE, GURUNANAK CHOWK,,RAIPUR"
+  },
+  {
+    "name": "GOVIND",
+    "phone": "9753145050",
+    "address": "KHANDELWAL FURNITURE, GURUNANAK CHOWK,,RAIPUR"
+  },
+  {
+    "name": "SUMAN",
+    "phone": "9111804464",
+    "address": "KHANDELWAL FURNITURE, GURUNANAK CHOWK,,RAIPUR"
+  },
+  {
+    "name": "GOVIND JI KHUTETA",
+    "phone": "9425511204",
+    "address": "SHRI KISHAN KUNJ MAIN ROAD, RAMSAGAR PARA, RAIPUR"
+  },
+  {
+    "name": "KARAN",
+    "phone": "9009007500",
+    "address": "SHRI KISHAN KUNJ MAIN ROAD, RAMSAGAR PARA, RAIPUR"
+  },
+  {
+    "name": "GIRDHARI JI KHUTETA",
+    "phone": "9826149801",
+    "address": "SHRI KISHAN KUNJ MAIN ROAD, RAMSAGAR PARA, RAIPUR"
+  },
+  {
+    "name": "",
+    "phone": "9827406385",
+    "address": "SHRI KISHAN KUNJ MAIN ROAD, RAMSAGAR PARA, RAIPUR"
+  },
+  {
+    "name": "GOURISHANKAR JI KAIYATHWAL",
+    "phone": "7999611705",
+    "address": "MAIN ROAD, RAMSAGAR PARA NEAR RAM JI HALWAI"
+  },
+  {
+    "name": "",
+    "phone": "9827970006",
+    "address": "MAIN ROAD, RAMSAGAR PARA NEAR RAM JI HALWAI"
+  },
+  {
+    "name": "GIRDHARI JI KAIYATHWAL",
+    "phone": "8055812220",
+    "address": "MAIN ROAD, RAMSAGAR PARA NEAR RAM JI HALWAI"
+  },
+  {
+    "name": "",
+    "phone": "9425501115",
+    "address": "MAIN ROAD, RAMSAGAR PARA NEAR RAM JI HALWAI"
+  },
+  {
+    "name": "MEENA",
+    "phone": "9329128228",
+    "address": "MAIN ROAD, RAMSAGAR PARA NEAR RAM JI HALWAI"
+  },
+  {
+    "name": "RAKHI",
+    "phone": "9907060004",
+    "address": "MAIN ROAD, RAMSAGAR PARA NEAR RAM JI HALWAI"
+  },
+  {
+    "name": "DR. ANKIT",
+    "phone": "8055812220",
+    "address": "MAIN ROAD, RAMSAGAR PARA NEAR RAM JI HALWAI"
+  },
+  {
+    "name": "GULAB CHAND JI TAMBOLIA",
+    "phone": "7000270568",
+    "address": "NEAR SANKAR MANDIR , BESIDE PUNJAB OIL MILL,RAMSAGAR PARA"
+  },
+  {
+    "name": "",
+    "phone": "9406379131",
+    "address": "NEAR SANKAR MANDIR , BESIDE PUNJAB OIL MILL,RAMSAGAR PARA"
+  },
+  {
+    "name": "MAHENDRA",
+    "phone": "8962005660",
+    "address": "NEAR SANKAR MANDIR , BESIDE PUNJAB OIL MILL,RAMSAGAR PARA"
+  },
+  {
+    "name": "SUDHA",
+    "phone": "8109184359",
+    "address": "NEAR SANKAR MANDIR , BESIDE PUNJAB OIL MILL,RAMSAGAR PARA"
+  },
+  {
+    "name": "AYUSH",
+    "phone": "9039638804",
+    "address": "NEAR SANKAR MANDIR , BESIDE PUNJAB OIL MILL,RAMSAGAR PARA"
+  },
+  {
+    "name": "GHANSHYAM DAS JI KULWAL",
+    "phone": "9827162455",
+    "address": "BESIDE, DR. SAHU X-RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "MEENAKSHI",
+    "phone": "9424225978",
+    "address": "BESIDE, DR. SAHU X-RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "GOPAL DAS JI KHUTETA",
+    "phone": "9826550024",
+    "address": "FRONT OF KIRODIMAL DHRAMSALA,,JHAWAHAR NAGAR"
+  },
+  {
+    "name": "GAURAV KHUTETA",
+    "phone": "9424250023",
+    "address": "FRONT OF KIRODIMAL DHRAMSALA,,JHAWAHAR NAGAR"
+  },
+  {
+    "name": "SARLA KHUTETA",
+    "phone": "9039197079",
+    "address": "FRONT OF KIRODIMAL DHRAMSALA,,JHAWAHAR NAGAR"
+  },
+  {
+    "name": "SWATA",
+    "phone": "9302448242",
+    "address": "FRONT OF KIRODIMAL DHRAMSALA,,JHAWAHAR NAGAR"
+  },
+  {
+    "name": "GOWARDHAN JI BADAYA",
+    "phone": "9827115911",
+    "address": "NEAR SRI KRISHNA DAIRY, BADHAYI PARA"
+  },
+  {
+    "name": "",
+    "phone": "9301901430",
+    "address": "NEAR SRI KRISHNA DAIRY, BADHAYI PARA"
+  },
+  {
+    "name": "ABHISHEK BADAYA",
+    "phone": "9691343331",
+    "address": "NEAR SRI KRISHNA DAIRY, BADHAYI PARA"
+  },
+  {
+    "name": "PRATIK BADAYA",
+    "phone": "9926207777",
+    "address": "NEAR SRI KRISHNA DAIRY, BADHAYI PARA"
+  },
+  {
+    "name": "NEELIMA",
+    "phone": "7000827089",
+    "address": "NEAR SRI KRISHNA DAIRY, BADHAYI PARA"
+  },
+  {
+    "name": "GOVIND DAS JI BADAYA",
+    "phone": "9301847702",
+    "address": "NEAR BABU SHAH MANDIR, DESH BANDHU,COMPLEX, RAMSAGAR PARA"
+  },
+  {
+    "name": "SHARDA BADAYA",
+    "phone": "9301669865",
+    "address": "NEAR BABU SHAH MANDIR, DESH BANDHU,COMPLEX, RAMSAGAR PARA"
+  },
+  {
+    "name": "GOPAL DAS JI BADAYA",
+    "phone": "9755036346",
+    "address": "HOUSE NO 12, PLOT AREA ,SAFAR GREEN , NEAR VIDHANSABHA CHOWK"
+  },
+  {
+    "name": "",
+    "phone": "8871204032",
+    "address": "HOUSE NO 12, PLOT AREA ,SAFAR GREEN , NEAR VIDHANSABHA CHOWK"
+  },
+  {
+    "name": "MOHAN LAL JI AMERIYA",
+    "phone": "9425503332",
+    "address": "SANTOSH NIWAS,MAIN ROAD, RAMSAGAR PARA,L4 HOUSE NO -111 SWARN BHOOMI , VIDHAN SABHA, ROAD,B-402, ASHOKA RATAN, KHAMARDHI, RAIPUR"
+  },
+  {
+    "name": "SHOBHA DEVI AMERIYA",
+    "phone": "7646852832",
+    "address": "SANTOSH NIWAS,MAIN ROAD, RAMSAGAR PARA,L4 HOUSE NO -111 SWARN BHOOMI , VIDHAN SABHA, ROAD,B-402, ASHOKA RATAN, KHAMARDHI, RAIPUR"
+  },
+  {
+    "name": "GOVIND AMERIYA",
+    "phone": "9425206914",
+    "address": "SANTOSH NIWAS,MAIN ROAD, RAMSAGAR PARA,L4 HOUSE NO -111 SWARN BHOOMI , VIDHAN SABHA, ROAD,B-402, ASHOKA RATAN, KHAMARDHI, RAIPUR"
+  },
+  {
+    "name": "NISHA AMERIYA",
+    "phone": "6263886391",
+    "address": "SANTOSH NIWAS,MAIN ROAD, RAMSAGAR PARA,L4 HOUSE NO -111 SWARN BHOOMI , VIDHAN SABHA, ROAD,B-402, ASHOKA RATAN, KHAMARDHI, RAIPUR"
+  },
+  {
+    "name": "NISHANT AMERIYA",
+    "phone": "9632263365",
+    "address": "SANTOSH NIWAS,MAIN ROAD, RAMSAGAR PARA,L4 HOUSE NO -111 SWARN BHOOMI , VIDHAN SABHA, ROAD,B-402, ASHOKA RATAN, KHAMARDHI, RAIPUR"
+  },
+  {
+    "name": "GUNJAN AMERIYA",
+    "phone": "9424202804",
+    "address": "SANTOSH NIWAS,MAIN ROAD, RAMSAGAR PARA,L4 HOUSE NO -111 SWARN BHOOMI , VIDHAN SABHA, ROAD,B-402, ASHOKA RATAN, KHAMARDHI, RAIPUR"
+  },
+  {
+    "name": "RASIK AMERIYA",
+    "phone": "9425206724",
+    "address": "SANTOSH NIWAS,MAIN ROAD, RAMSAGAR PARA,L4 HOUSE NO -111 SWARN BHOOMI , VIDHAN SABHA, ROAD,B-402, ASHOKA RATAN, KHAMARDHI, RAIPUR"
+  },
+  {
+    "name": "RADHIKA AMERIYA",
+    "phone": "7773004005",
+    "address": "SANTOSH NIWAS,MAIN ROAD, RAMSAGAR PARA,L4 HOUSE NO -111 SWARN BHOOMI , VIDHAN SABHA, ROAD,B-402, ASHOKA RATAN, KHAMARDHI, RAIPUR"
+  },
+  {
+    "name": "KUSUM BADAYA",
+    "phone": "8109974990",
+    "address": "OM HANUMANT KRIPA, 56 AVNI GREEN, DALDALSHIVNI,,MOWA"
+  },
+  {
+    "name": "MAYANK",
+    "phone": "9827151224",
+    "address": "OM HANUMANT KRIPA, 56 AVNI GREEN, DALDALSHIVNI,,MOWA"
+  },
+  {
+    "name": "ANSUL",
+    "phone": "9300125782",
+    "address": "OM HANUMANT KRIPA, 56 AVNI GREEN, DALDALSHIVNI,,MOWA"
+  },
+  {
+    "name": "LAXMI NARAYAN JI BADAYA",
+    "phone": "7987144465",
+    "address": "BESIDE DR. SAHU X- RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "",
+    "phone": "7974966176",
+    "address": "BESIDE DR. SAHU X- RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "RAJKUMARI",
+    "phone": "7400703000",
+    "address": "BESIDE DR. SAHU X- RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "MADANLAL JI BADGOTI",
+    "phone": "",
+    "address": "RAMSAPTA MANDIR, RAMSAGAR PARA"
+  },
+  {
+    "name": "ASHOK BADGOTI",
+    "phone": "9806583500",
+    "address": "RAMSAPTA MANDIR, RAMSAGAR PARA"
+  },
+  {
+    "name": "SUBASH BADGOTI",
+    "phone": "",
+    "address": "RAMSAPTA MANDIR, RAMSAGAR PARA"
+  },
+  {
+    "name": "ANSHUL BADGOTI",
+    "phone": "",
+    "address": "RAMSAPTA MANDIR, RAMSAGAR PARA"
+  },
+  {
+    "name": "NAMAM BADGOTI",
+    "phone": "",
+    "address": "RAMSAPTA MANDIR, RAMSAGAR PARA"
+  },
+  {
+    "name": "GOPI KISAN KHUTETA",
+    "phone": "",
+    "address": "NEAR BABU SHAH MANDIR, DESH BANDHU,COMPLEX, RAMSAGAR PARA"
+  },
+  {
+    "name": "MAHESH JI KUTETA",
+    "phone": "7987625050",
+    "address": "NEAR BABU SHAH MANDIR, DESH BANDHU,COMPLEX, RAMSAGAR PARA"
+  },
+  {
+    "name": "DURGA DEVI",
+    "phone": "9425517631",
+    "address": "NEAR BABU SHAH MANDIR, DESH BANDHU,COMPLEX, RAMSAGAR PARA"
+  },
+  {
+    "name": "MADHUSUDHAN BADAYA",
+    "phone": "9826766376",
+    "address": "NEAR BABU SHAH MANDIR, DESH BANDHU,COMPLEX, RAMSAGAR PARA"
+  },
+  {
+    "name": "NEHA BADAYA",
+    "phone": "8770235458",
+    "address": "NEAR BABU SHAH MANDIR, DESH BANDHU,COMPLEX, RAMSAGAR PARA"
+  },
+  {
+    "name": "PUROSHOTTAM DAS BADAYA",
+    "phone": "94255070",
+    "address": "BESIDE DR. SAHU X- RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "VISHAL",
+    "phone": "9425208507",
+    "address": "BESIDE DR. SAHU X- RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "SAHIL",
+    "phone": "9425208506",
+    "address": "BESIDE DR. SAHU X- RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "SARIKA",
+    "phone": "9098049149",
+    "address": "BESIDE DR. SAHU X- RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "NISHA",
+    "phone": "9406020864",
+    "address": "BESIDE DR. SAHU X- RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "SITARAM",
+    "phone": "9425509763",
+    "address": "BESIDE DR. SAHU X- RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "VIRIJAHA ( HANUMAN)",
+    "phone": "7000658315",
+    "address": "BESIDE DR. SAHU X- RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "RITU",
+    "phone": "7000652071",
+    "address": "BESIDE DR. SAHU X- RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "MAMTA",
+    "phone": "9575775501",
+    "address": "BESIDE DR. SAHU X- RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "GARIMA",
+    "phone": "9893029494",
+    "address": "BESIDE DR. SAHU X- RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "PRAMOD JI NATANI",
+    "phone": "9806135001",
+    "address": ""
+  },
+  {
+    "name": "",
+    "phone": "9826135001",
+    "address": ""
+  },
+  {
+    "name": "RAMKISHAN JI BHANGLA",
+    "phone": "9827116334",
+    "address": "NEAR INDIAN BANK, JHAWAR NAGAR"
+  },
+  {
+    "name": "KANCHAN BHANGLA",
+    "phone": "9201633153",
+    "address": "NEAR INDIAN BANK, JHAWAR NAGAR"
+  },
+  {
+    "name": "RAJENDRA KULWAL",
+    "phone": "9981233000",
+    "address": "SAMTA COLONY"
+  },
+  {
+    "name": "",
+    "phone": "9039133000",
+    "address": "SAMTA COLONY"
+  },
+  {
+    "name": "RAJENDRA KULWAL",
+    "phone": "9425510048",
+    "address": "SAMTA COLONY"
+  },
+  {
+    "name": "MANGAL",
+    "phone": "9589346704",
+    "address": "SAMTA COLONY"
+  },
+  {
+    "name": "SONAM",
+    "phone": "6260384504",
+    "address": "SAMTA COLONY"
+  },
+  {
+    "name": "SURESH KUMAR  BADGOTI",
+    "phone": "9806170010",
+    "address": "NEAR SAMTA NADIR, RAMSAGAR PARA"
+  },
+  {
+    "name": "JAYESH BADGOTI",
+    "phone": "8269081248",
+    "address": "NEAR SAMTA NADIR, RAMSAGAR PARA"
+  },
+  {
+    "name": "ANKUR BADGOTI",
+    "phone": "8319704070",
+    "address": "NEAR SAMTA NADIR, RAMSAGAR PARA"
+  },
+  {
+    "name": "SUNIL",
+    "phone": "9827405705",
+    "address": "NEAR SAMTA NADIR, RAMSAGAR PARA"
+  },
+  {
+    "name": "ANIL",
+    "phone": "6264445109",
+    "address": "NEAR SAMTA NADIR, RAMSAGAR PARA"
+  },
+  {
+    "name": "AJAY",
+    "phone": "9993491578",
+    "address": "NEAR SAMTA NADIR, RAMSAGAR PARA"
+  },
+  {
+    "name": "SHALIGRAM JI KHUTETA",
+    "phone": "",
+    "address": "FRONT OF KIRODIMAL DHRAMSALA,,JHAWAHAR NAGAR"
+  },
+  {
+    "name": "GIRISH KHUTETA",
+    "phone": "9425258253",
+    "address": "FRONT OF KIRODIMAL DHRAMSALA,,JHAWAHAR NAGAR"
+  },
+  {
+    "name": "RITU KHUTETA",
+    "phone": "9406077602",
+    "address": "FRONT OF KIRODIMAL DHRAMSALA,,JHAWAHAR NAGAR"
+  },
+  {
+    "name": "APPROV",
+    "phone": "7587109801",
+    "address": "FRONT OF KIRODIMAL DHRAMSALA,,JHAWAHAR NAGAR"
+  },
+  {
+    "name": "ABUDEY",
+    "phone": "7987219143",
+    "address": "FRONT OF KIRODIMAL DHRAMSALA,,JHAWAHAR NAGAR"
+  },
+  {
+    "name": "SANTOSH KUMAR AMERIYA",
+    "phone": "9826141178",
+    "address": "VILLA 249 , SFAR GREEN, VIDHANSABHA MARG"
+  },
+  {
+    "name": "SANDHYA",
+    "phone": "7999950533",
+    "address": "VILLA 249 , SFAR GREEN, VIDHANSABHA MARG"
+  },
+  {
+    "name": "ANURAG",
+    "phone": "7771800999",
+    "address": "VILLA 249 , SFAR GREEN, VIDHANSABHA MARG"
+  },
+  {
+    "name": "MEENAKSHI",
+    "phone": "8928324543",
+    "address": "VILLA 249 , SFAR GREEN, VIDHANSABHA MARG"
+  },
+  {
+    "name": "VINOD KUMAR JI BHANGLA",
+    "phone": "9827895520",
+    "address": "RAMSAPTA GALI, RAMSAGAR PARA"
+  },
+  {
+    "name": "ARCHANA BHANGLA",
+    "phone": "",
+    "address": "RAMSAPTA GALI, RAMSAGAR PARA"
+  },
+  {
+    "name": "ADDITYA BHANGLA",
+    "phone": "8770652691",
+    "address": "RAMSAPTA GALI, RAMSAGAR PARA"
+  },
+  {
+    "name": "VIDIT",
+    "phone": "8602902690",
+    "address": "RAMSAPTA GALI, RAMSAGAR PARA"
+  },
+  {
+    "name": "SHOBHA DEVI KHUTETA",
+    "phone": "9827406385",
+    "address": "MAI ROAD, RAMSAGAR PARA"
+  },
+  {
+    "name": "HARSH",
+    "phone": "9827869455",
+    "address": "MAI ROAD, RAMSAGAR PARA"
+  },
+  {
+    "name": "SHOBHIT",
+    "phone": "9826149801",
+    "address": "MAI ROAD, RAMSAGAR PARA"
+  },
+  {
+    "name": "MEENA DEVI TAMBI",
+    "phone": "9111411111",
+    "address": "NEAR PUNJAB BANK, RAJESHWAR COMPLEX,,RAMSAGAR PARA"
+  },
+  {
+    "name": "meena",
+    "phone": "7803062755",
+    "address": "NEAR PUNJAB BANK, RAJESHWAR COMPLEX,,RAMSAGAR PARA"
+  },
+  {
+    "name": "ANIL RAWAT JI",
+    "phone": "8461843237",
+    "address": "HANUMAN MANDIR, GALI, RAMSAGARPRA"
+  },
+  {
+    "name": "ASHOK JI TODWAL",
+    "phone": "9039374387",
+    "address": ""
+  },
+  {
+    "name": "SUSHILA BADGOTI",
+    "phone": "9329103747",
+    "address": "RAMSAPTA GALI, RAMSAGAR PARA"
+  },
+  {
+    "name": "NARAYAN DAS JI PATODIA",
+    "phone": "9406145059",
+    "address": "GOVIND BHAWAN, RAMSAGAR PARA"
+  },
+  {
+    "name": "DINESH",
+    "phone": "9827164448",
+    "address": "GOVIND BHAWAN, RAMSAGAR PARA"
+  },
+  {
+    "name": "GIRIRAJ JI GHUTETA",
+    "phone": "9827176636",
+    "address": "NAGAR NIGAM , COLONY , RAMSAGAR PARA"
+  },
+  {
+    "name": "OM PRAKESH BHANGLA JI",
+    "phone": "9893134060",
+    "address": "NAGAR NIGAM, COLONY"
+  },
+  {
+    "name": "",
+    "phone": "9826070403",
+    "address": "NAGAR NIGAM, COLONY"
+  },
+  {
+    "name": "SATYANARAYAN JI KHARWAL",
+    "phone": "9425209410",
+    "address": "SAMTA COLONY"
+  },
+  {
+    "name": "",
+    "phone": "8889295432",
+    "address": "SAMTA COLONY"
+  },
+  {
+    "name": "SANTOSH JI KHARWAL",
+    "phone": "9827107560",
+    "address": "SAMTA COLONY"
+  },
+  {
+    "name": "RAJIV JI DANGAYCH",
+    "phone": "9827937053",
+    "address": "SAMTA COLONY"
+  },
+  {
+    "name": "LALIT TAMBOLIYA",
+    "phone": "9893039090",
+    "address": "SAMTA COLONY"
+  },
+  {
+    "name": "OM PRAKESH KAYATWAL",
+    "phone": "",
+    "address": "SAMTA COLONY"
+  },
+  {
+    "name": "ASHA JI",
+    "phone": "7000659030",
+    "address": "SAMTA COLONY"
+  },
+  {
+    "name": "KALASHCHAND JI KHUTETA",
+    "phone": "9827163871",
+    "address": "CHOBEY COLONY"
+  },
+  {
+    "name": "GHANSHYAM BADAYA",
+    "phone": "",
+    "address": "CHOBEY COLONY"
+  },
+  {
+    "name": "VIVEK",
+    "phone": "9827116565",
+    "address": "CHOBEY COLONY"
+  },
+  {
+    "name": "NAND KISHOR JI DANGAYACH",
+    "phone": "9827400589",
+    "address": "BSIDE. VANDANA AUTO NEAR RANKUND, G.E ROAD"
+  },
+  {
+    "name": "KANTILAL KHUTETA",
+    "phone": "9425214600",
+    "address": "GEETA NAGAR,NEXT TO CHOBEY COLONY"
+  },
+  {
+    "name": "GHANSHYAM",
+    "phone": "9827162919",
+    "address": "GEETA NAGAR,NEXT TO CHOBEY COLONY"
+  },
+  {
+    "name": "JUGAL KHUTETA",
+    "phone": "9425214006",
+    "address": "GEETA NAGAR,NEXT TO CHOBEY COLONY"
+  },
+  {
+    "name": "",
+    "phone": "9827490027",
+    "address": "GEETA NAGAR,NEXT TO CHOBEY COLONY"
+  },
+  {
+    "name": "DR. DEVKI NANDAN JI AMERIYA",
+    "phone": "",
+    "address": "GEETA NAGAR,NEXT TO CHOBEY COLONY"
+  },
+  {
+    "name": "DR SAILESH",
+    "phone": "9131006551",
+    "address": "GEETA NAGAR,NEXT TO CHOBEY COLONY"
+  },
+  {
+    "name": "ASHOK JI BHANGLA",
+    "phone": "9300205808",
+    "address": "VILA 7 ,MARUTI LIFESTYLE PARMANAND NAGAR ,,KOTA ROAD, NOHABA BAZAR"
+  },
+  {
+    "name": "CHAVI",
+    "phone": "9111166006",
+    "address": "VILA 7 ,MARUTI LIFESTYLE PARMANAND NAGAR ,,KOTA ROAD, NOHABA BAZAR"
+  },
+  {
+    "name": "DR. LAVI KHARWAL",
+    "phone": "8889767373",
+    "address": "NEAR AIIMS, G.E ROAD"
+  },
+  {
+    "name": "ARUN KULWAL",
+    "phone": "9827903131",
+    "address": "REAM NAGAR KOTA"
+  },
+  {
+    "name": "KALA KULWAL",
+    "phone": "9009488883",
+    "address": "REAM NAGAR KOTA"
+  },
+  {
+    "name": "ABHISHEK",
+    "phone": "7000859495",
+    "address": "REAM NAGAR KOTA"
+  },
+  {
+    "name": "KANHA KULWAL",
+    "phone": "9300779200",
+    "address": "REAM NAGAR KOTA"
+  },
+  {
+    "name": "SANTOSH",
+    "phone": "81303557540",
+    "address": "REAM NAGAR KOTA"
+  },
+  {
+    "name": "VIJAY",
+    "phone": "9827903131",
+    "address": "REAM NAGAR KOTA"
+  },
+  {
+    "name": "HANI",
+    "phone": "9907650700",
+    "address": "REAM NAGAR KOTA"
+  },
+  {
+    "name": "ANURAG KHARWAL",
+    "phone": "7869916811",
+    "address": "RADHE RADHE NIWAS, M.NO- 764-65, JANTA COLONY,GUDIHARI,GUL MOHAR,RAM NAGAR,  KOTA ROAD"
+  },
+  {
+    "name": "SHIKHA",
+    "phone": "9584800083",
+    "address": "RADHE RADHE NIWAS, M.NO- 764-65, JANTA COLONY,GUDIHARI,GUL MOHAR,RAM NAGAR,  KOTA ROAD"
+  },
+  {
+    "name": "",
+    "phone": "9329139722",
+    "address": "RADHE RADHE NIWAS, M.NO- 764-65, JANTA COLONY,GUDIHARI,GUL MOHAR,RAM NAGAR,  KOTA ROAD"
+  },
+  {
+    "name": "BASANT BHANGLA",
+    "phone": "7389069604",
+    "address": "RADHE RADHE NIWAS, M.NO- 764-65, JANTA COLONY,GUDIHARI,GUL MOHAR,RAM NAGAR,  KOTA ROAD"
+  },
+  {
+    "name": "RAJA",
+    "phone": "8770880077",
+    "address": "RADHE RADHE NIWAS, M.NO- 764-65, JANTA COLONY,GUDIHARI,GUL MOHAR,RAM NAGAR,  KOTA ROAD"
+  },
+  {
+    "name": "ANIL DANGAYACH",
+    "phone": "9425205696",
+    "address": "BEHIND SUYESH HOSPITAL, SAMTA PHASE-2, KOTA"
+  },
+  {
+    "name": "SARAT",
+    "phone": "9424505696",
+    "address": "BEHIND SUYESH HOSPITAL, SAMTA PHASE-2, KOTA"
+  },
+  {
+    "name": "AMIT",
+    "phone": "9827937137",
+    "address": "BEHIND SUYESH HOSPITAL, SAMTA PHASE-2, KOTA"
+  },
+  {
+    "name": "RAHUL",
+    "phone": "9993909191",
+    "address": "BEHIND SUYESH HOSPITAL, SAMTA PHASE-2, KOTA"
+  },
+  {
+    "name": "ABHISHEK",
+    "phone": "9926107777",
+    "address": "BEHIND SUYESH HOSPITAL, SAMTA PHASE-2, KOTA"
+  },
+  {
+    "name": "OM PRAKASH KULWAL",
+    "phone": "9425226534",
+    "address": "ABINADAN TOWER,B- 501 , MAIN ROAD, BHATA GAO"
+  },
+  {
+    "name": "SHEELA",
+    "phone": "9406261354",
+    "address": "ABINADAN TOWER,B- 501 , MAIN ROAD, BHATA GAO"
+  },
+  {
+    "name": "RAVI JI KHUTATE",
+    "phone": "9907817801",
+    "address": "MAHADEV GHAT, ROAD"
+  },
+  {
+    "name": "MEENA",
+    "phone": "9827924321",
+    "address": "MAHADEV GHAT, ROAD"
+  },
+  {
+    "name": "MUKESH BHANGLA",
+    "phone": "9926116556",
+    "address": "MAHADEV GHAT, ROAD"
+  },
+  {
+    "name": "MAYA",
+    "phone": "8959595946",
+    "address": "MAHADEV GHAT, ROAD"
+  },
+  {
+    "name": "DR. GOVIND PATODIA",
+    "phone": "9424215565",
+    "address": "NEAR, RAMNATH BHIMSAN BHAWAN , SANTA COLONY"
+  },
+  {
+    "name": "GHANSHYAM DAS BHUKMARIYA",
+    "phone": "9425513779",
+    "address": "DEVENDRA NAGAR"
+  },
+  {
+    "name": "MUKESH KHARWAL",
+    "phone": "9229211502",
+    "address": "DEVENDRA NAGAR"
+  },
+  {
+    "name": "SHARAD JI DUSAD",
+    "phone": "9425206858",
+    "address": "DEVENDRA NAGAR"
+  },
+  {
+    "name": "BRIJESH JI BADGOTI",
+    "phone": "8120000307",
+    "address": "DEVENDRA NAGAR"
+  },
+  {
+    "name": "NAND KISHORE SONKHIYA",
+    "phone": "8889778651",
+    "address": "SANKARNAGAR, ROAD"
+  },
+  {
+    "name": "ROHIT KULWAL",
+    "phone": "9406292000",
+    "address": "DEVENDRA NAGAR"
+  },
+  {
+    "name": "PRAMILA BHANGLA",
+    "phone": "9039066000",
+    "address": "D-304 KOOL HOMES, MOWA"
+  },
+  {
+    "name": "ARVIND",
+    "phone": "9039130000",
+    "address": "D-304 KOOL HOMES, MOWA"
+  },
+  {
+    "name": "UMESH BHANGLA",
+    "phone": "9424214800",
+    "address": "D-304 KOOL HOMES, MOWA"
+  },
+  {
+    "name": "RASHMI",
+    "phone": "9301841000",
+    "address": "D-304 KOOL HOMES, MOWA"
+  },
+  {
+    "name": "",
+    "phone": "8770759623",
+    "address": "D-304 KOOL HOMES, MOWA"
+  },
+  {
+    "name": "KUSUM BADAYA",
+    "phone": "9827151224",
+    "address": "VIDHANSAFA ROAD"
+  },
+  {
+    "name": "RAJENDRA BADAYA",
+    "phone": "9425203122",
+    "address": "NEAR PACHMADI ROAD"
+  },
+  {
+    "name": "ANKIT",
+    "phone": "",
+    "address": "NEAR PACHMADI ROAD"
+  },
+  {
+    "name": "VISESH",
+    "phone": "",
+    "address": "NEAR PACHMADI ROAD"
+  },
+  {
+    "name": "GANESH BANGLA",
+    "phone": "9827151950",
+    "address": "SANKAR NAGAR"
+  },
+  {
+    "name": "GHANSHYAM KAYATWAL",
+    "phone": "8602322000",
+    "address": "ASHOKA RATAN , KHAMARDI"
+  },
+  {
+    "name": "NAVAL JI BADAYA",
+    "phone": "9926751530",
+    "address": "VIDHAN SABHA"
+  },
+  {
+    "name": "SANTOSH KHARWAL",
+    "phone": "9827407090",
+    "address": "GAYATRI NAGAR"
+  },
+  {
+    "name": "ANIL KHUTETA",
+    "phone": "9827115343",
+    "address": "NEAR SALTEX COLONY, GAYATRI NAGAR,,KHAMARDI"
+  },
+  {
+    "name": "SATYANARAYAN KHUTETA",
+    "phone": "9302638725",
+    "address": "NEAR SALTEX COLONY, GAYATRI NAGAR,,KHAMARDI"
+  },
+  {
+    "name": "RAMESH TODWAL",
+    "phone": "6260727455",
+    "address": "HOUSE NO- A2 ,MANSHA CHAMBER , NEAR OM COMPLEX, BHABADIH"
+  },
+  {
+    "name": "SHAKTI TODWAL",
+    "phone": "9993112148",
+    "address": "HOUSE NO- A2 ,MANSHA CHAMBER , NEAR OM COMPLEX, BHABADIH"
+  },
+  {
+    "name": "KRANTI",
+    "phone": "9329403370",
+    "address": "HOUSE NO- A2 ,MANSHA CHAMBER , NEAR OM COMPLEX, BHABADIH"
+  },
+  {
+    "name": "GHANSHYAMDAS KHUTETA ( RAJESH)",
+    "phone": "9827162370",
+    "address": "KHURIDIH , JAWHARLAL NAGAR"
+  },
+  {
+    "name": "GOWARDHAN",
+    "phone": "9425202280",
+    "address": "KHURIDIH , JAWHARLAL NAGAR"
+  },
+  {
+    "name": "MUKUNT",
+    "phone": "9827162370",
+    "address": "KHURIDIH , JAWHARLAL NAGAR"
+  },
+  {
+    "name": "PREM GHIYA",
+    "phone": "9028888365",
+    "address": ""
+  },
+  {
+    "name": "ASHOK GHIYA",
+    "phone": "8602447744",
+    "address": ""
+  },
+  {
+    "name": "KAMLA RAWAT",
+    "phone": "9755347954",
+    "address": ""
+  },
+  {
+    "name": "SUNIL KHARWAL",
+    "phone": "9827116943",
+    "address": "pharshita complex, rajmanda complex"
+  },
+  {
+    "name": "MANISH DANGYAJ",
+    "phone": "7000658315",
+    "address": ""
+  },
+  {
+    "name": "MANISH BADGOTI",
+    "phone": "9424202042",
+    "address": "devendra nagar, sector 1"
+  },
+  {
+    "name": "L.K. GHIYA",
+    "phone": "",
+    "address": ""
+  },
+  {
+    "name": "GOPAL DANGAYACH",
+    "phone": "9827172695",
+    "address": "DR. SAHU X-RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "GOVIND DANGAYACH",
+    "phone": "",
+    "address": "DR. SAHU X-RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "YASH DANGAYACH",
+    "phone": "7828917695",
+    "address": "DR. SAHU X-RAY, RAMSAGAR PARA"
+  },
+  {
+    "name": "SUDHIR RAWAT",
+    "phone": "7354665696",
+    "address": "indrawati colony"
+  },
+  {
+    "name": "NITESH GOLIYA",
+    "phone": "9893410388",
+    "address": "ASHWARIYA RESIDENCY, AIRPORT CHOWK"
+  },
+  {
+    "name": "",
+    "phone": "9977960388",
+    "address": "ASHWARIYA RESIDENCY, AIRPORT CHOWK"
+  },
+  {
+    "name": "PRITI GOLIYA",
+    "phone": "9009511388",
+    "address": "ASHWARIYA RESIDENCY, AIRPORT CHOWK"
+  },
+  {
+    "name": "VIVEK KULWAL",
+    "phone": "9584174111",
+    "address": "BARSANA COMLEX, NEAR AIIMS , TATIBANDH"
+  },
+  {
+    "name": "AJAY KHARWAL",
+    "phone": "9893379370",
+    "address": ""
+  },
+  {
+    "name": "DINESH KAYATWAL",
+    "phone": "9827195099",
+    "address": "NEW RAJENDRA NAGAR,"
+  },
+  {
+    "name": "GUDIYA",
+    "phone": "7000189873",
+    "address": "NEW RAJENDRA NAGAR,"
+  },
+  {
+    "name": "ASHISH SAWADIYA",
+    "phone": "9926655520",
+    "address": "NEAR OVER BRIDGE, PANDRY , RAIPUR"
+  },
+  {
+    "name": "RITU",
+    "phone": "9407649707",
+    "address": "NEAR OVER BRIDGE, PANDRY , RAIPUR"
+  },
+  {
+    "name": "VISHAL DANGHYACH",
+    "phone": "9669066666",
+    "address": "AVNI VIHAR"
+  },
+  {
+    "name": "SAGAR",
+    "phone": "9827402150",
+    "address": "AVNI VIHAR"
+  },
+  {
+    "name": "PAWAN JI DANGAYACH",
+    "phone": "9329100902",
+    "address": "AVNI VIHAR"
+  },
+  {
+    "name": "RADHE SHYAM BHUKMARIYA",
+    "phone": "9826143308",
+    "address": "NEAR DURGA MANDIR, BAJRANG NAGAR"
+  },
+  {
+    "name": "NITISH",
+    "phone": "9691502601",
+    "address": "NEAR DURGA MANDIR, BAJRANG NAGAR"
+  },
+  {
+    "name": "BADRI PRASAD BHUKMARIYA",
+    "phone": "8839320045",
+    "address": "NEAR MAHARASHTA MADAL, CHOBEY"
+  },
+  {
+    "name": "MAYUR",
+    "phone": "9827117851",
+    "address": "NEAR MAHARASHTA MADAL, CHOBEY"
+  },
+  {
+    "name": "RAKESH JI - RISABH PATOLIYA",
+    "phone": "8347221845",
+    "address": "MOVA , VIDHAN SABHA ROAD"
+  },
+  {
+    "name": "RITIKA",
+    "phone": "9770669267",
+    "address": "MOVA , VIDHAN SABHA ROAD"
+  },
+  {
+    "name": "NAVAL BADAYA",
+    "phone": "9926751530",
+    "address": "MOVA , VIDHAN SABHA ROAD"
+  },
+  {
+    "name": "REKHA",
+    "phone": "6260972422",
+    "address": "MOVA , VIDHAN SABHA ROAD"
+  },
+  {
+    "name": "NANDKISHORE SOKHIA",
+    "phone": "8889778651",
+    "address": "DEVENDRA NAGAR, SECTOR 1"
+  },
+  {
+    "name": "SHRI OM JI KULWAL",
+    "phone": "9425226534",
+    "address": "ABHINANDAN TOWER , NEAR WATER TANK, BHATAGAO,SECTOR -3 SHIVANAND NAGAR , HOUSE NO- 465, BESIDE,LAKSHMI SAI MANGLA BHAWAN"
+  },
+  {
+    "name": "",
+    "phone": "9406261354",
+    "address": "ABHINANDAN TOWER , NEAR WATER TANK, BHATAGAO,SECTOR -3 SHIVANAND NAGAR , HOUSE NO- 465, BESIDE,LAKSHMI SAI MANGLA BHAWAN"
+  },
+  {
+    "name": "ASHOK KUMAR RAJORIA",
+    "phone": "7389166228",
+    "address": "ABHINANDAN TOWER , NEAR WATER TANK, BHATAGAO,SECTOR -3 SHIVANAND NAGAR , HOUSE NO- 465, BESIDE,LAKSHMI SAI MANGLA BHAWAN"
+  },
+  {
+    "name": "NITISH",
+    "phone": "9712844828",
+    "address": "ABHINANDAN TOWER , NEAR WATER TANK, BHATAGAO,SECTOR -3 SHIVANAND NAGAR , HOUSE NO- 465, BESIDE,LAKSHMI SAI MANGLA BHAWAN"
+  },
+  {
+    "name": "RAJIV GUPTA",
+    "phone": "",
+    "address": "ABHINANDAN TOWER , NEAR WATER TANK, BHATAGAO,SECTOR -3 SHIVANAND NAGAR , HOUSE NO- 465, BESIDE,LAKSHMI SAI MANGLA BHAWAN"
+  },
+  {
+    "name": "ASHISH",
+    "phone": "7411906833",
+    "address": "ABHINANDAN TOWER , NEAR WATER TANK, BHATAGAO,SECTOR -3 SHIVANAND NAGAR , HOUSE NO- 465, BESIDE,LAKSHMI SAI MANGLA BHAWAN"
+  },
+  {
+    "name": "C.A. PRAVEEN JI THOKORIYA",
+    "phone": "",
+    "address": "E-14 ANUPAM NAGAR, RAIPUR"
+  },
+  {
+    "name": "RAHUL",
+    "phone": "9981666699",
+    "address": "E-14 ANUPAM NAGAR, RAIPUR"
+  },
+  {
+    "name": "ANU",
+    "phone": "9981666688",
+    "address": "E-14 ANUPAM NAGAR, RAIPUR"
+  },
+  {
+    "name": "ANIL KHUTETA",
+    "phone": "9827115343",
+    "address": "HOUSE NO H-8 SALES TAX COLONY, SANKARNAGAR,"
+  },
+  {
+    "name": "VINITA",
+    "phone": "7974584507",
+    "address": "HOUSE NO H-8 SALES TAX COLONY, SANKARNAGAR,"
+  },
+  {
+    "name": "ABHINAV KHANDELWAL",
+    "phone": "9623477238",
+    "address": "HOUSE NNO B-2 ANADHAM WORLD CITY, KACHNA"
+  },
+  {
+    "name": "",
+    "phone": "8390901401",
+    "address": "HOUSE NNO B-2 ANADHAM WORLD CITY, KACHNA"
+  },
+  {
+    "name": "AJAY AMERIYA",
+    "phone": "9425516716",
+    "address": "D-263 MR COLONY, TAGORE NAGAR"
+  },
+  {
+    "name": "AMIT KHUTETA",
+    "phone": "9303385785",
+    "address": "JANTA COLONY, GUDYARI THANA RADHE RADHE NIWAS,"
+  },
+  {
+    "name": "AJAY AMERIYA",
+    "phone": "9425516716",
+    "address": "D- 263 A.R. COLONY TAGORE NAGAR"
+  },
+  {
+    "name": "",
+    "phone": "9300377099",
+    "address": "D- 263 A.R. COLONY TAGORE NAGAR"
+  },
+  {
+    "name": "ASHOK BHUKMARIYA",
+    "phone": "9827173201",
+    "address": "AHILIYA SADAN, CHOBEY COLONY, NEAR MAHARASHTA MANDIRRAIPUR"
+  },
+  {
+    "name": "",
+    "phone": "8857810000",
+    "address": "AHILIYA SADAN, CHOBEY COLONY, NEAR MAHARASHTA MANDIRRAIPUR"
+  }
+];
+
+        // Render table on page load
+        function renderTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            if (data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:20px;">No records found</td></tr>';
+                document.getElementById('visibleRecords').textContent = '0';
+                return;
+            }
+
+            data.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                const phoneValue = row.phone || '';
+                const phoneDisplay = phoneValue ? `<a href="tel:${phoneValue}" class="phone-link">${phoneValue}</a>` : '<span class="empty-cell">-</span>';
+
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${row.name || '<span class="empty-cell">-</span>'}</td>
+                    <td>${phoneDisplay}</td>
+                    <td>${row.address || '<span class="empty-cell">-</span>'}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            document.getElementById('visibleRecords').textContent = data.length;
+        }
+
+        // Search and filter function
+        function filterTable() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const filteredData = jsonData.filter(row => {
+                return (
+                    (row.name || '').toLowerCase().includes(searchInput) ||
+                    (row.phone || '').toLowerCase().includes(searchInput) ||
+                    (row.address || '').toLowerCase().includes(searchInput)
+                );
+            });
+            renderTable(filteredData);
+        }
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('totalRecords').textContent = jsonData.length;
+            renderTable(jsonData);
+        });
+    </script>
 </html>
