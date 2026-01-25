@@ -96,19 +96,67 @@ const translations = {
     "hero-title": { "en": "Khandelwal Samaj Raipur", "hi": "खंडेलवाल समाज रायपुर" }
 };
 
+// Ensure currentLang is initialized
 let currentLang = 'en';
 
-function toggleLanguage() {
+// Define the function globally so onclick="toggleLanguage()" can find it
+window.toggleLanguage = function() {
     currentLang = currentLang === 'en' ? 'hi' : 'en';
 
-    // Update button text
-    document.getElementById('lang-toggle').innerText = currentLang === 'en' ? 'हिन्दी' : 'English';
+    const langBtn = document.getElementById('lang-toggle');
+    if (langBtn) {
+        langBtn.innerText = currentLang === 'en' ? 'हिन्दी' : 'English';
+    }
 
     // Update all elements with data-key attribute
     document.querySelectorAll('[data-key]').forEach(elem => {
         const key = elem.getAttribute('data-key');
-        if (translations[key]) {
+        if (translations[key] && translations[key][currentLang]) {
             elem.innerText = translations[key][currentLang];
         }
     });
+};
+
+function startWebsite() {
+    const overlay = document.getElementById('inauguration-overlay');
+    const music = document.getElementById('bg-music');
+
+    // 1. Play the music
+    if (music) {
+        music.play().catch(error => console.log("Music play blocked by browser:", error));
+    }
+
+    // 2. Hide the overlay
+    overlay.classList.add('hidden-overlay');
+
+    // Optional: After a few seconds, stop the music or fade it out
+    // setTimeout(() => { music.pause(); }, 30000);
+}
+function playInauguration() {
+    const video = document.getElementById('inauguration-video');
+    const music = document.getElementById('bg-music');
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const overlay = document.getElementById('video-overlay');
+
+    // 1. Hide the Welcome Button
+    welcomeScreen.style.opacity = '0';
+
+    // 2. Show and Play Video
+    video.style.display = 'block';
+    video.play();
+
+    // 3. Play Music
+    if (music) {
+        music.play();
+    }
+
+    // 4. When video finishes, fade out the overlay
+    video.onended = function() {
+        overlay.classList.add('fade-out');
+
+        // Remove from DOM after fade completes so users can interact with home page
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 1500);
+    };
 }
