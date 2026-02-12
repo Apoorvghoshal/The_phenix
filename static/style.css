@@ -4,6 +4,9 @@
   --accent: #6b1f1f;
   --dark: #222;
   --light-gray: #f7f7f7;
+  --card-width: 120px;
+  --gap: 25px;
+  --transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 body {
@@ -509,3 +512,73 @@ footer .copyright {
     margin-bottom: 20px;
     font-family: serif;
 }
+
+/* ===============team ==================== */
+
+/* The Grid System */
+    .team-section {
+    display: grid;
+    max-width: 1200px; /* Limits width so it doesn't stretch forever on big screens */
+    margin: 40px auto; /* Centers the grid */
+    /* Fixed the variables here */
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
+    gap: var(--gap);
+    padding: 0 20px; /* Internal breathing room */
+}
+
+        /* The Individual Module */
+        .member-module {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        .member-module:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Image via Div for easy folder mapping */
+        .image-container {
+            width: 100%;
+            aspect-ratio: 1 / 1; /* Keeps it square */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: var(--transition);
+            /* Optional: subtle placeholder color if image is missing */
+            background-color: #ddd;
+        }
+
+        .member-module:hover .image-container {
+            transform: scale(1.05);
+        }
+
+        .details {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .details h3 {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #2d3436;
+        }
+
+        .details p {
+            margin: 5px 0 0;
+            font-size: 0.65rem;
+            color: #636e72;
+            font-weight: 500;
+        }
+
+        /* Responsive tweak for small screens */
+        @media (max-width: 480px) {
+            .team-section {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .details h3 { font-size: 0.9rem; }
+        }
