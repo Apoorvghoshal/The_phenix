@@ -1,0 +1,16 @@
+User-agent: *
+
+# Allow Google to see your public content
+Allow: /
+Allow: /home
+Allow: /about
+Allow: /contact
+
+# Block Google from private or sensitive areas
+Disallow: /verify
+Disallow: /request-otp
+Disallow: /get_directory_data
+Disallow: /dashboard
+
+# Link to your sitemap (helps Google find pages faster)
+Sitemap: https://khandelwalyuvamanch.org/sitemap.xml
