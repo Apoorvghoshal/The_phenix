@@ -48,11 +48,37 @@ def directory():
     # If not logged in, show the login page
     return render_template('login.html')
 
+import requests  # Ensure requests is imported
+
+# --- CONFIGURATION (Match these with your JS) ---
+API_KEY = 'AIzaSyBO9c1WNNC7U1fnbUr2QaAe-WeuQ282Yuo'
+SPREADSHEET_ID = '1FJnnBG6umRmJ3O1aYs4PKyb4PdBzhLRCyLElw7SKRzA'
+AUTH_RANGE = 'A1:E500'  # We fetch up to Column E
+
+
+def get_authorized_emails():
+    """Fetches Column E from Google Sheets dynamically"""
+    url = f"https://sheets.googleapis.com/v4/spreadsheets/{SPREADSHEET_ID}/values/{AUTH_RANGE}?key={API_KEY}"
+    try:
+        response = requests.get(url, timeout=5)
+        data = response.json()
+        if 'values' in data:
+            # We look at the 5th element (index 4) of every row
+            # .strip().lower() handles accidental spaces or capital letters in Excel
+            emails = [row[4].strip().lower() for row in data['values'] if len(row) > 4]
+            return emails
+        return []
+    except Exception as e:
+        print(f"Auth Fetch Error: {e}")
+        return []
+
+
 @app.route('/request-otp', methods=['POST'])
 def request_otp():
-    email = request.form.get('email')
-    with open('users.json', 'r') as f:
-        allowed_users = json.load(f)
+    email = request.form.get('email').strip().lower()
+
+    # Fetch live emails from Google Sheets instead of JSON file
+    allowed_users = get_authorized_emails()
 
     if email in allowed_users:
         otp = str(random.randint(1000, 9999))
@@ -62,9 +88,9 @@ def request_otp():
         flash("OTP sent to your email!", "info")
         return render_template('verify.html')
     else:
+        # Debugging tip: print(f"Denied: {email}. Allowed: {allowed_users}")
         flash("Email not authorized for directory access!", "danger")
         return redirect(url_for('directory'))
-
 @app.route('/verify', methods=['POST'])
 def verify():
     user_otp = request.form.get('otp')
@@ -84,4 +110,5 @@ def logout():
 
 if __name__ == '__main__':
     # Inside Docker, the host must be 0.0.0.0
+
     app.run(host='0.0.0.0', port=5000)
