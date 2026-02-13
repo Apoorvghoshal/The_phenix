@@ -102,6 +102,13 @@ def verify():
         flash("Invalid OTP. Try again.", "danger")
         return render_template('verify.html')
 
+from flask import send_from_directory
+
+@app.route('/robots.txt')
+@app.route('/sitemap.xml')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
+
 @app.route('/logout')
 def logout():
     session.clear()
@@ -112,3 +119,4 @@ if __name__ == '__main__':
     # Inside Docker, the host must be 0.0.0.0
 
     app.run(host='0.0.0.0', port=5000)
+
