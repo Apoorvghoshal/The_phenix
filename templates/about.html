@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Learn about the history, mission, and values of the Khandelwal Samaj and Yuva Manch.">
   <link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='activities-nav.css') }}">
 </head>
 <body>
 
@@ -21,6 +22,7 @@
       <a href="{{ url_for('about') }}" data-key="about-link">About</a>
       <a href="{{ url_for('directory') }}" data-key="directory-link">Community Directory</a>
       <a href="{{ url_for('contact') }}" data-key="contact-link">Contact</a>
+      <a class="activities-2026-link" href="{{ url_for('activities_2026') }}">२०२६ की गतिविधियाँ</a>
     </nav>
 
     <div class="menu-toggle" onclick="toggleMenu()">☰</div>

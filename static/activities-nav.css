@@ -1,0 +1,6 @@
+/* Only the new navigation item is styled on existing pages. */
+#nav-menu a.activities-2026-link{display:inline-flex;align-items:center;justify-content:center;align-self:center;background:#6b1f1f;color:#fff8e9;border:1px solid #7b2c25;border-radius:24px;padding:7px 15px;line-height:1.5;white-space:nowrap;font-weight:700;box-shadow:0 2px 8px #6b1f1f20}
+#nav-menu a.activities-2026-link:hover{background:#842d29;color:white}
+#nav-menu a.activities-2026-link:focus-visible{outline:3px solid white;outline-offset:3px}
+@media(min-width:769px) and (max-width:1100px){.navbar .nav-container{flex-wrap:wrap;gap:12px}.navbar #nav-menu{flex-wrap:wrap;gap:16px;align-items:center}}
+@media(max-width:768px){#nav-menu a.activities-2026-link{align-self:stretch}}

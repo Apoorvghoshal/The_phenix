@@ -34,6 +34,10 @@ def home():
 def about():
     return render_template('about.html')
 
+@app.route('/2026-activities')
+def activities_2026():
+    return render_template('2026-activities.html')
+
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
