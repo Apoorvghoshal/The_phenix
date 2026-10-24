@@ -8,8 +8,10 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code
-COPY . .
+# Copy only the application files used at runtime.
+COPY app.py ./
+COPY templates/ ./templates/
+COPY static/ ./static/
 
 # Expose the port Flask runs on
 EXPOSE 5000

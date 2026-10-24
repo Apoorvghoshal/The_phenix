@@ -1,0 +1,8 @@
+.git
+.gitignore
+.venv
+__pycache__
+**/__pycache__
+*.pyc
+*.pyo
+static/assests/15_Aug_2026/
